@@ -9,7 +9,7 @@ public class SoketReadFile {
     private String str = "";
     public SoketReadFile(){
     }
-    public String getStreang() {
+    public String getString() {
         try(Scanner in = new Scanner(file)) {
             while(in.hasNext()){
                 str += in.nextLine() + "\n";

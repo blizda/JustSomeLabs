@@ -36,6 +36,7 @@ class ServerSoketIn extends Thread {
                 }
                 else if(pc.isAutorise()){
                     myString.setMyString(line, numOfCon);
+                    System.out.println(NameHolder.getNameFromId(numOfCon) + ": " + line);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

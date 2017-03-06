@@ -29,11 +29,11 @@ class ServerSoketOut extends Thread {
         DataOutputStream out = new DataOutputStream(sout);
         while (true) {
             try {
-                if (isFerstCon && pc.isAutorise()){
+                if ((isFerstCon && pc.isAutorise())){
                     isFerstCon = false;
-                    out.writeUTF(new SoketReadFile().getStreang().replace(NameHolder.getNameFromId(numOfCon) + ": ", ""));
+                    out.writeUTF(new SoketReadFile().getString().replace(NameHolder.getNameFromId(numOfCon) + ": ", ""));
                 }
-                else if((myString.getString() != null) && (!(myString.getString() == line) )) {
+                else if((myString.getString() != null) && (!(myString.getString() == line) && !isFerstCon)) {
                     if ((!numOfCon.equals(myString.getNum()))) {
                         line = myString.getString();
                         out.writeUTF(NameHolder.getNameFromId(myString.getNum()) + ": " + line);
