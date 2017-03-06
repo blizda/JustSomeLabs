@@ -14,8 +14,7 @@ class ReadFromKeyboard extends Thread {
         while (true) {
             try {
                 String line = keyboard.readLine();
-                myString.setMyString(line);
-                System.out.println(line);
+                myString.setMyString(line, -1);
             }
             catch (IOException e) {
                 e.printStackTrace();

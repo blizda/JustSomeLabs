@@ -10,6 +10,7 @@ public class ServerRuner {
 
     public static void main(String[] args) {
         int port = 1488;
+        Integer numOfCon = 0;
         try {
             ServerSocket ss = new ServerSocket(port);
             BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
@@ -17,8 +18,10 @@ public class ServerRuner {
             new ReadFromKeyboard(keyboard, stringHolder).start();
             while (true) {
                 Socket socket = ss.accept();
-                new ServerSoketIn(socket, stringHolder).start();
-                new ServerSoketOut(socket, stringHolder).start();
+                PassCheker pc = new PassCheker(numOfCon);
+                new ServerSoketIn(socket, numOfCon, stringHolder, pc).start();
+                new ServerSoketOut(socket, numOfCon, stringHolder, pc).start();
+                numOfCon++;
             }
         } catch (IOException e) {
             e.printStackTrace();

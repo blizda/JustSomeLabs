@@ -9,9 +9,14 @@ class ServerSoketIn extends Thread {
     private final Socket socket;
     private volatile String line;
     private SinglString myString;
-    public ServerSoketIn(Socket socket, SinglString myString) {
+    private Integer numOfCon;
+    private boolean isFerstCon = true;
+    private PassCheker pc;
+    public ServerSoketIn(Socket socket, Integer numOfCon, SinglString myString, PassCheker pc) {
         this.socket = socket;
         this.myString = myString;
+        this.pc = pc;
+        this.numOfCon = numOfCon;
     }
     public void run() {
         InputStream sin = null;
@@ -24,11 +29,17 @@ class ServerSoketIn extends Thread {
         while (true) {
             try {
                 line = in.readUTF();
-                myString.setMyString(line);
+                if (isFerstCon){
+                    if (pc.isPass(line)){
+                        isFerstCon = false;
+                    }
+                }
+                else if(pc.isAutorise()){
+                    myString.setMyString(line, numOfCon);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println(line);
         }
     }
 }
