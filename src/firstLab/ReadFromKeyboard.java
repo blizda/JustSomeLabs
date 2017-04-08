@@ -14,7 +14,12 @@ class ReadFromKeyboard extends Thread {
         while (true) {
             try {
                 String line = keyboard.readLine();
-                myString.setXML(AdminXMLMaker.makeXML("admin", line), -1);
+                if (line.startsWith("/sendfile")){
+                    myString.setXML(AdminXMLMaker.maceSand("admin", line), -1);
+                }
+                else {
+                    myString.setXML(AdminXMLMaker.makeXML("admin", line), -1);
+                }
             }
             catch (IOException e) {
                 e.printStackTrace();
