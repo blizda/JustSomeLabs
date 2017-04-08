@@ -17,7 +17,7 @@ public class ServerRuner {
             SinglString stringHolder = new SinglString();
             new ReadFromKeyboard(keyboard, stringHolder).start();
             NameHolder.addName(-1, "admin");
-            System.out.println(new SoketReadFile().getString().replaceAll("admin: ", ""));
+            System.out.println((new ChatXMLParser(new SoketReadFile().getXML()).getMassgeHistory()).replaceAll("admin: ", ""));
             while (true) {
                 Socket socket = ss.accept();
                 PassCheker pc = new PassCheker(numOfCon);

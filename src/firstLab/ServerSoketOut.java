@@ -1,21 +1,27 @@
 package firstLab;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import org.w3c.dom.Document;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.*;
 import java.net.Socket;
 
 class ServerSoketOut extends Thread {
     private final Socket socket;
-    private String line;
-    private SinglString myString;
+    private Document line;
+    private SinglString myXML;
     private Integer numOfCon;
-    private SoketWriteInFile file;
+    //private SoketWriteInFile file;
     private boolean isFerstCon = true;
     private PassCheker pc;
-    public ServerSoketOut(Socket socket, Integer numOfCon, SinglString myString, PassCheker pc) {
+    public ServerSoketOut(Socket socket, Integer numOfCon, SinglString myXml, PassCheker pc) {
         this.socket = socket;
-        this.myString = myString;
+        this.myXML = myXml;
         this.numOfCon = numOfCon;
         this.pc = pc;
     }
@@ -26,21 +32,37 @@ class ServerSoketOut extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        DataOutputStream out = new DataOutputStream(sout);
+        BufferedOutputStream out = new BufferedOutputStream(sout);
         while (true) {
             try {
                 if ((isFerstCon && pc.isAutorise())){
                     isFerstCon = false;
-                    out.writeUTF(new SoketReadFile().getString().replace(NameHolder.getNameFromId(numOfCon) + ": ", ""));
+                    pc.ferstAcs = true;
+                    new ChatXMLMaker().makeServerAutosie("accepted", out);
+                    TransformerFactory tf = TransformerFactory.newInstance();
+                    Transformer transformer = tf.newTransformer();
+                    transformer.transform(new DOMSource(new SoketReadFile().getXML()),
+                            new StreamResult(out));
+                    out.flush();
                 }
-                else if((myString.getString() != null) && (!(myString.getString() == line) && !isFerstCon)) {
-                    if ((!numOfCon.equals(myString.getNum()))) {
-                        line = myString.getString();
-                        out.writeUTF(NameHolder.getNameFromId(myString.getNum()) + ": " + line);
+                else if(isFerstCon && !pc.isAutorise() && pc.ferstAcs){
+                    new ChatXMLMaker().makeServerAutosie("rejekt", out);
+                }
+                else if((myXML.getMyXML() != null) && (!(myXML.getMyXML() == line) && !isFerstCon)) {
+                    if ((!numOfCon.equals(myXML.getNum()))) {
+                        line = myXML.getMyXML();
+                        TransformerFactory tf = TransformerFactory.newInstance();
+                        Transformer transformer = tf.newTransformer();
+                        transformer.transform(new DOMSource(line),
+                                new StreamResult(out));
                         out.flush();
                     }
                 }
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (TransformerConfigurationException e) {
+                e.printStackTrace();
+            } catch (TransformerException e) {
                 e.printStackTrace();
             }
         }

@@ -1,13 +1,18 @@
 package firstLab;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
 import java.net.Socket;
 
 class ServerSoketIn extends Thread {
     private final Socket socket;
-    private volatile String line;
+    private Document doc;
     private SinglString myString;
     private Integer numOfCon;
     private boolean isFerstCon = true;
@@ -25,22 +30,22 @@ class ServerSoketIn extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        DataInputStream in = new DataInputStream(sin);
         while (true) {
-            try {
-                line = in.readUTF();
+            XMLKostyl xmlKostyl = new XMLKostyl(sin);
+            doc = xmlKostyl.receive();
+            if (xmlKostyl.XMLWasRead() && doc != null) {
                 if (isFerstCon){
-                    if (pc.isPass(line)){
+                    if (pc.isPass(doc)){
                         isFerstCon = false;
                     }
                 }
                 else if(pc.isAutorise()){
-                    myString.setMyString(line, numOfCon);
-                    System.out.println(NameHolder.getNameFromId(numOfCon) + ": " + line);
+                    myString.setXML(doc, numOfCon);
+                    ChatXMLParser ch = new ChatXMLParser(doc);
+                    System.out.println(ch.getLogin() + ": " + ch.getMassage());
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }
 }
+

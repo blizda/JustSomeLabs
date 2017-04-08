@@ -1,26 +1,28 @@
 package firstLab;
 
+import org.w3c.dom.Document;
+
 import java.io.FileNotFoundException;
 
 class SinglString {
-    private volatile String myString;
+    public volatile Document myXML;
     private volatile Integer numOfCon;
-    public String getString() {
-        return myString;
-    }
-    public void setMyString(String myString, Integer numOfCon){
-        try {
-            new SoketWriteInFile(NameHolder.getNameFromId(numOfCon) + ": " + myString);
-        } catch (FileNotFoundException e) {
+    //public Document getString() {
+        //return myXML;
+    //}
+    public void setXML(Document myXML, Integer numOfCon){
+        //try {
+            new SoketWriteInFile(myXML);
+        /*} catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
         this.numOfCon = numOfCon;
-        this.myString = myString;
+        this.myXML = myXML;
     }
     public Integer getNum(){
         return numOfCon;
     }
-    /*public void setNumOfCon(int numOfCon){
-        this.numOfCon = numOfCon;
-    }*/
+    public Document getMyXML(){
+        return myXML;
+    }
 }

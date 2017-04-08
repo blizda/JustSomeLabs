@@ -14,7 +14,7 @@ class ReadFromKeyboard extends Thread {
         while (true) {
             try {
                 String line = keyboard.readLine();
-                myString.setMyString(line, -1);
+                myString.setXML(AdminXMLMaker.makeXML("admin", line), -1);
             }
             catch (IOException e) {
                 e.printStackTrace();
