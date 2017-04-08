@@ -37,7 +37,13 @@ class SoketOut extends Thread {
                     LocalHistorKeper.setLogin(logAndPass[0]);
                 }
                 else {
-                    new ChatXMLMaker().makeXML(LocalHistorKeper.getLogin(), line, out);
+                    if (line.startsWith("/sendfile")){
+                        String[] fileName = line.split(" ");
+                        new ChatXMLMaker().makeXMLFileWithFileInside(LocalHistorKeper.getLogin(), fileName[1], out);
+                    }
+                    else {
+                        new ChatXMLMaker().makeXML(LocalHistorKeper.getLogin(), line, out);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();

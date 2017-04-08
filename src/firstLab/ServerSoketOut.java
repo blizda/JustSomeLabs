@@ -16,7 +16,6 @@ class ServerSoketOut extends Thread {
     private Document line;
     private SinglString myXML;
     private Integer numOfCon;
-    //private SoketWriteInFile file;
     private boolean isFerstCon = true;
     private PassCheker pc;
     public ServerSoketOut(Socket socket, Integer numOfCon, SinglString myXml, PassCheker pc) {

@@ -1,12 +1,6 @@
 package firstLab;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.Socket;
 
@@ -40,9 +34,10 @@ class ServerSoketIn extends Thread {
                     }
                 }
                 else if(pc.isAutorise()){
+                    System.out.println("qq from ser");
                     myString.setXML(doc, numOfCon);
                     ChatXMLParser ch = new ChatXMLParser(doc);
-                    System.out.println(ch.getLogin() + ": " + ch.getMassage());
+                    System.out.println(ch.getMassageAndLog());
                 }
             }
         }

@@ -25,13 +25,9 @@ public class PassCheker {
         try (Scanner in = new Scanner(file)) {
             while (in.hasNext()) {
                 str = in.nextLine().trim();
-                /*DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                DocumentBuilder db = dbf.newDocumentBuilder();
-                Document parseDoc = db.parse((File) doc);*/
                 Element root = doc.getDocumentElement();
                 String log = root.getAttribute("login");
                 String pass = root.getAttribute("password");
-                //System.out.println("qq from pc");
                 String logAndPass = log + " " + pass;
                 if (logAndPass.equals(str)){
                     NameHolder.addName(id, str.split(" ")[0]);

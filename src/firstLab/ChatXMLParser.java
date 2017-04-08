@@ -1,9 +1,12 @@
 package firstLab;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Base64;
 
 public class ChatXMLParser {
     private Document document;
@@ -32,6 +35,24 @@ public class ChatXMLParser {
                 }
             }
         }
+        else if(root.getTagName().equals("file")){
+            String data = document.getDocumentElement().getFirstChild().getTextContent();
+            login = "system";
+            String fileName = root.getAttribute("fileName");
+            byte[] fileData = Base64.getDecoder().decode(data);
+            String newFileName = ResiveFileMaker.makeFile(fileName);
+            try(FileOutputStream out = new FileOutputStream(newFileName)){
+                out.write(fileData);
+                out.flush();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            massage = "файл " + newFileName + " от пользователя " + document.getDocumentElement().getAttribute("autor")
+                    + " успешно получен";
+
+        }
         else
             autoriseStatus = root.getAttribute("status");
     }
@@ -42,6 +63,10 @@ public class ChatXMLParser {
     public String getMassage(){
         documentParseMassage();
         return massage;
+    }
+    public String getMassageAndLog(){
+        documentParseMassage();
+        return login + ": " + massage;
     }
     public String getMassgeHistory(){
         documentParseMassage();
