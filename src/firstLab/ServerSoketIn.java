@@ -34,7 +34,6 @@ class ServerSoketIn extends Thread {
                     }
                 }
                 else if(pc.isAutorise()){
-                    System.out.println("qq from ser");
                     myString.setXML(doc, numOfCon);
                     ChatXMLParser ch = new ChatXMLParser(doc);
                     System.out.println(ch.getMassageAndLog());
